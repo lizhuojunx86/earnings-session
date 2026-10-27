@@ -1,0 +1,74 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "earnings-session"
+version = "0.1.0"
+description = "Classify when an earnings release went out (pre-open, intraday, post-close) from SEC EDGAR acceptance times, and check a backtest entry for look-ahead."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [{ name = "Zhuojun Li" }]
+keywords = ["sec", "edgar", "8-k", "earnings", "backtest", "look-ahead", "pead"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Intended Audience :: Science/Research",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Typing :: Typed",
+]
+dependencies = [
+    "exchange_calendars>=4.5.8",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = ["mypy>=1.10", "pytest>=8", "ruff>=0.6"]
+
+[project.scripts]
+earnings-session = "earnings_session.cli:main"
+
+[project.urls]
+Changelog = "https://github.com/lizhuojunx86/earnings-session/blob/main/CHANGELOG.md"
+Source = "https://github.com/lizhuojunx86/earnings-session"
+
+[tool.hatch.build.targets.sdist]
+include = ["src", "tests", "README.md", "METHOD.md", "CHANGELOG.md", "LICENSE"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-m 'not network' --strict-markers"
+markers = ["network: hits sec.gov; needs EARNINGS_SESSION_USER_AGENT (run with -m network)"]
+filterwarnings = [
+    "error",
+    # exchange_calendars internals on pandas >= 3.1
+    "ignore:Series.values returning an ndarray:Warning",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "SIM", "RUF", "PT", "ANN"]
+ignore = ["ANN401"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["ANN", "PT018"]  # compound asserts read as one fact per line
+
+[tool.mypy]
+strict = true
+python_version = "3.10"
+files = ["src", "tests"]
+
+[[tool.mypy.overrides]]
+module = ["exchange_calendars", "exchange_calendars.*"]
+ignore_missing_imports = true
