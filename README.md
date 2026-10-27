@@ -2,7 +2,7 @@
 
 Earnings calendars tag each release BMO (before the market opens) or AMC (after it closes). When the tag is wrong, or missing and treated as BMO, a backtest that buys at the open buys before the news is out, and the return it books is look-ahead. `earnings-session` checks the tag against SEC EDGAR. It finds the company's earnings 8-K, reads the time EDGAR accepted it, and tells you which trading session that time falls in and whether your backtest entered before it.
 
-I wrote it after running this check by hand on my own post-earnings-drift backtest. About half of the backtest's trades came from events with no timing label, and the backtest entered them at the open as if they were BMO. In a sample of 95 of those events with an earnings 8-K, 59% of the 8-Ks were accepted at or after the close of the entry day. Once every event was moved to the session its 8-K supports, net alpha per trade fell from 1.21% to about 0.25%.
+I wrote it after running this check by hand on my own post-earnings-drift backtest. About half of the backtest's trades came from events with no timing label, and the backtest entered them at the open as if they were BMO. In a sample of 95 of those events with an earnings 8-K, 59% of the 8-Ks were accepted at or after the close of the entry day. Once every event was moved to the session its 8-K supports, net alpha per trade fell from 1.21% to about 0.25%. The full write-up is on [dev.to](https://dev.to/lizhuojunx86/my-pead-backtests-edge-fell-from-121-to-025-per-trade-once-i-checked-announcement-times-3k31), with a Chinese version on [Zhihu](https://zhuanlan.zhihu.com/p/2098525849448346965).
 
 ## Install
 
