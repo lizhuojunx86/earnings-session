@@ -4,8 +4,8 @@ build-backend = "hatchling.build"
 
 [project]
 name = "earnings-session"
-version = "0.1.0"
-description = "Classify when an earnings release went out (pre-open, intraday, post-close) from SEC EDGAR acceptance times, and check a backtest entry for look-ahead."
+version = "0.2.0"
+description = "Classify when an earnings release went out (pre-open, intraday, post-close) from SEC EDGAR acceptance times, check a backtest entry for look-ahead, and check that its price bars sit on their target days."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"

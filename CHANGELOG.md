@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.2.0 (2026-10-27)
+
+- `bars`: checks, offline, that a backtest's price bars sit on their target days. For each trade it finds the entry and exit bars in your price table, or reads the ones the backtest recorded, measures the distance in NYSE trading days and calendar days, and flags `early_bar`, `history_break`, `no_bar`, `entry_gap` and `exit_gap`. The summary gives each flag's share with a Wilson 95% interval, the distance distribution, and how much of the summed return the flagged rows carry. `--fail-on-flag` exits 1 for CI.
+- `find_bar` and `check_trades` in the Python API.
+- `calendar.trading_days()` and `calendar.in_range()`.
+
 ## 0.1.0 (2026-10-27)
 
 First release.

@@ -30,11 +30,24 @@ def calendar_bounds() -> tuple[date, date]:
     return cal.first_session.date(), cal.last_session.date()
 
 
-def _check(d: date) -> None:
+def in_range(d: date) -> bool:
+    """True when ``d`` can be looked up (one week of slack inside the calendar's ends)."""
     lo, hi = calendar_bounds()
     # one week of slack each side so prev/next lookups at the edges still work
-    if not (lo + timedelta(days=7) <= d <= hi - timedelta(days=7)):
+    return lo + timedelta(days=7) <= d <= hi - timedelta(days=7)
+
+
+def _check(d: date) -> None:
+    if not in_range(d):
+        lo, hi = calendar_bounds()
         raise ValueError(f"{d} is outside the XNYS calendar range ({lo} to {hi})")
+
+
+@lru_cache(maxsize=1)
+def trading_days() -> tuple[date, ...]:
+    """Every NYSE trading day in the calendar range, ascending."""
+    sessions = (ts.date() for ts in _xnys().sessions)
+    return tuple(d for d in sessions if d not in SPECIAL_CLOSURES)
 
 
 def is_trading_day(d: date) -> bool:
