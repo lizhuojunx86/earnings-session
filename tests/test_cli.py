@@ -112,6 +112,20 @@ class TestCommands:
         assert "classifying 4 events first" in captured.err
         assert json.loads(captured.out)["n_events"] == 4
 
+    def test_audit_without_vendor_labels(
+        self, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+    ) -> None:
+        rows = [{"ticker": e["ticker"], "event_date": e["event_date"]} for e in EVENTS]
+        src = write_csv(tmp_path / "in.csv", rows)
+        dst = tmp_path / "out.csv"
+        assert cli.main(["batch", str(src), str(dst)]) == 0
+        capsys.readouterr()
+        assert cli.main(["audit", str(dst), "--json"]) == 0
+        main = json.loads(capsys.readouterr().out)["groups"]["8-K Item 2.02"]
+        assert main["confusion"]["(none)"]["amc"] == 1 and main["confusion"]["(none)"]["bmo"] == 1
+        assert main["by_vendor_label"]["(none)"]["after_entry"]["k"] == 1
+        assert "agrees" not in main["by_vendor_label"]["(none)"]
+
     def test_bad_date_is_reported_with_its_line(
         self, tmp_path: Path, capsys: pytest.CaptureFixture[str]
     ) -> None:

@@ -70,9 +70,7 @@ def _group(rows: Sequence[Mapping[str, str]]) -> dict[str, Any]:
 
 
 def audit_rows(rows: Sequence[Mapping[str, str]]) -> dict[str, Any]:
-    missing = {"vendor_label", "rule", "verdict", "edgar_label", "reason"} - set(
-        rows[0].keys() if rows else ()
-    )
+    missing = {"rule", "verdict", "edgar_label", "reason"} - set(rows[0].keys() if rows else ())
     if rows and missing:
         raise ValueError(f"not batch output: missing column(s) {', '.join(sorted(missing))}")
     unresolved = [r for r in rows if not r["rule"]]
