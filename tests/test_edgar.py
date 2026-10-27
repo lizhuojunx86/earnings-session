@@ -16,14 +16,14 @@ from earnings_session.timing import parse_edgar_acceptance
 
 class TestUserAgent:
     @pytest.mark.parametrize(
-        "ua", ["Jane Doe jane@doe-research.org", "Acme Fund LLC ops@acme-fund.com"]
+        "ua", ["Jane Doe jane@doe-research.test", "Acme Fund LLC ops@acme-fund.test"]
     )
     def test_accepts_name_and_email(self, ua: str) -> None:
         assert edgar.check_user_agent(f"  {ua} ") == ua
 
     @pytest.mark.parametrize(
         "ua",
-        [None, "", "   ", "jane@doe-research.org", "Jane Doe", "Jane jane@example.com"],
+        [None, "", "   ", "jane@doe-research.test", "Jane Doe", "Jane jane@example.com"],
     )
     def test_refuses_and_explains_the_sec_format(self, ua: str | None) -> None:
         with pytest.raises(edgar.UserAgentError) as exc:
