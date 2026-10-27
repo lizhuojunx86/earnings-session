@@ -96,3 +96,25 @@ The tool therefore takes the time from the index page's "Accepted" line, which i
 - About a quarter of the sampled events could not be timed, mostly because the window held no filing at all. A wider window was not tested.
 - A ticker printed only inside a list of tickers ("Nasdaq: A, B, X") is not matched by the identity check, so a few issuers that share filings with affiliates stay unresolved.
 - Events EDGAR can't time could be placed from the price and volume reaction. That is planned, not built: see the README roadmap.
+
+## 10. Price-bar alignment (`bars`)
+
+The session rules above fix the entry day. A backtest can still price that day wrong. The usual lookup is "the first bar on or after the entry date" and "the last bar on or before the exit date". With no limit on the distance, a ticker that has no bars near the target gets whatever bar is next, weeks or years away, and the return lands in the wrong period without an error.
+
+I found this in October 2026 in a different backtest of mine, a monthly-rebalanced 10-K text-change signal. Its monthly return function searched for the entry and exit bars with no distance limit. 719 of 3,282 name-months (21.9%, 56 tickers) were priced from bars outside their month. For 34 of those tickers the price table only started in December 2025, so a run in 2026 booked 2026 prices into months from 2019 to 2025. Every result from that backtest had to be thrown out. The fix required both bars within 7 calendar days of their targets and dropped the name-month otherwise.
+
+`bars` measures that distance for every trade.
+
+- **Targets.** The entry target is `entry_date` and the exit target `exit_date`. A target that isn't a trading day moves to the trading day the rule would reach (the next one for an entry, the previous one for an exit). The move goes into `notes` and is not a gap.
+- **Bars.** With `--prices`, each ticker's dates are searched in the same direction as the rule, with no distance limit, because the point is to see how far the bar is. Without `--prices`, the bar dates the backtest recorded (`entry_bar_date`, `exit_bar_date`) are used.
+- **Distance.** Signed, in NYSE trading days (the XNYS calendar of section 2) and in calendar days, measured from the trading day the rule should have reached; positive means the bar is later. A trading day with no bar counts as skipped: a Friday entry priced from a Monday bar is 1 day late.
+- **Flags.** One per row, the most serious that applies, in this order: `early_bar` (a recorded entry bar before `entry_date`), `history_break` (a bar more than `--break-days` trading days away, default 250), `no_bar`, `entry_gap` and `exit_gap` (more than `--max-gap` trading days away, default 0), `ok`. The others that also apply are listed in `notes`.
+- **Defaults.** `--max-gap 0` because an event entry is one session's open, and a bar one session late is a different trade. Weekly or monthly rebalancing can tolerate a few days; the fix above allowed 7 calendar days, about 5 trading days. 250 trading days is about a year, far beyond any lookup a backtest means to make.
+- **Returns.** With a `return` column, the summary gives the mean and sum for flagged and clean rows, and the share of the summed return the flagged rows carry. A flagged minority that carries most of the result is the fingerprint of this bug.
+
+Limits:
+
+- It checks dates, not prices. A bar on the right day with a wrong price passes.
+- A gap can be real. Halts, suspensions and thinly traded names have missing days; the flag says to look, not that the trade is wrong.
+- The price table has to be the one the backtest used. A cleaner table than the backtest saw passes trades the backtest mispriced.
+- Bars dated outside the calendar range (1995 to about a year ahead) are dropped and counted.

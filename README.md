@@ -4,6 +4,8 @@ Earnings calendars tag each release BMO (before the market opens) or AMC (after 
 
 I wrote it after running this check by hand on my own post-earnings-drift backtest. About half of the backtest's trades came from events with no timing label, and the backtest entered them at the open as if they were BMO. In a sample of 95 of those events with an earnings 8-K, 59% of the 8-Ks were accepted at or after the close of the entry day. Once every event was moved to the session its 8-K supports, net alpha per trade fell from 1.21% to about 0.25%. The full write-up is on [dev.to](https://dev.to/lizhuojunx86/my-pead-backtests-edge-fell-from-121-to-025-per-trade-once-i-checked-announcement-times-3k31), with a Chinese version on [Zhihu](https://zhuanlan.zhihu.com/p/2098525849448346965).
 
+The second check, `bars`, is about prices. A backtest that takes "the first bar on or after the entry date" with no limit on the distance prices a trade from whatever bar comes next, months or years later when the ticker has no history around that date, and nothing raises an error. I found this in a monthly 10-K text-signal backtest of mine: 719 of 3,282 name-months (21.9%) were priced from bars outside their month, and for 34 tickers the price table only started in December 2025, so 2026 prices had been booked into 2019-2025. `bars` reads your trade list and price table, measures how far each bar sits from its target in NYSE trading days, and flags the rows to look at. It runs offline.
+
 ## Install
 
 ```bash
@@ -16,7 +18,7 @@ Python 3.10 or later. SEC asks every automated client to say who it is, so set a
 export EARNINGS_SESSION_USER_AGENT="Your Name you@your-domain.com"
 ```
 
-or pass `--user-agent` on each command. Without one the tool exits and prints the format SEC expects.
+or pass `--user-agent` on each command. Without one the tool exits and prints the format SEC expects. `bars` never goes online and doesn't need one.
 
 ## Use
 
@@ -100,6 +102,51 @@ by vendor label
 
 Rows found through other 8-Ks, 10-Qs or 10-Ks, and 6-K proxies, are reported in their own blocks and never mixed into the Item 2.02 numbers. If the input has no `verdict` column, `audit` classifies it first.
 
+### Check the price bars
+
+```bash
+earnings-session bars trades.csv --prices prices.csv -o checked.csv
+```
+
+`trades.csv` needs `ticker` and `entry_date`; `exit_date` and `return` are optional, and other columns are carried through. `prices.csv` is the price table your backtest read, with `ticker` and `date` columns (the rest is ignored). The entry bar is the first one on or after `entry_date` and the exit bar the last one on or before `exit_date`, which is how most backtests look them up; `--entry-side` and `--exit-side` turn either one around.
+
+```text
+trades: 5
+bars from prices.csv: 3532 rows, 3 tickers
+entry = first bar on or after entry_date; exit = last bar on or before exit_date; max gap 0 trading days; history break > 250
+
+flags (Wilson 95%)
+  history_break 1/5 = 20.0% (3.6%-62.4%)
+  no_bar        1/5 = 20.0% (3.6%-62.4%)
+  entry_gap     1/5 = 20.0% (3.6%-62.4%)
+  ok            2/5 = 40.0% (11.8%-76.9%)
+
+distance from target, trading days
+  entry 0: 2, 1: 0, 2-5: 1, 6-20: 0, 21-250: 0, >250: 1, no bar: 1
+  exit  0: 3, 1: 0, 2-5: 0, 6-20: 0, 21-250: 0, >250: 0, no bar: 2
+
+returns (the 'return' column)
+  flagged  n 3, mean 0.038, sum 0.114
+  ok       n 2, mean 0.008, sum 0.016
+  flagged rows carry 87.7% of the total
+```
+
+Each row gets one flag, the most serious that applies:
+
+| flag | meaning |
+|---|---|
+| `early_bar` | the entry bar the backtest recorded is before `entry_date`: the trade was priced before the day it claims |
+| `history_break` | a bar more than 250 trading days (`--break-days`) from its target: another stretch of history, maybe another company on a reused ticker |
+| `no_bar` | the ticker isn't in the price table, or there is no bar in that direction |
+| `entry_gap`, `exit_gap` | a bar more than `--max-gap` trading days (default 0) from its target |
+| `ok` | none of the above |
+
+`checked.csv` keeps your columns and adds, for each leg, the target day, the bar found, and the distance in trading days and calendar days, then the flag and notes. If your trade file already records the bars the backtest used (`entry_bar_date`, `exit_bar_date`), leave out `--prices` and those are checked instead; that is the only way to catch `early_bar`. `--fail-on-flag` exits 1 when any row is flagged, so the check can run in CI.
+
+In the example, three flagged trades out of five carry 88% of the summed return. When the flagged rows carry the result, the backtest is measuring its own lookup.
+
+If you build returns with `pandas.merge_asof`, pass `tolerance`. Without it the join takes the nearest bar at any distance.
+
 ### From Python
 
 ```python
@@ -113,6 +160,17 @@ r.to_dict()  # the JSON above
 ```
 
 The CLI calls the same `Classifier.classify`. For a single call there is also `earnings_session.classify(...)`.
+
+```python
+from datetime import date
+from earnings_session import find_bar
+
+bars = [date(2025, 12, 8), date(2025, 12, 9)]        # a ticker whose history starts late
+find_bar(bars, date(2019, 6, 28))                  # date(2025, 12, 8): six years late
+find_bar(bars, date(2019, 6, 28), max_gap_td=5)    # None: no bar within 5 trading days
+```
+
+`earnings_session.check_trades` runs the full `bars` check on a list of trades.
 
 ## How it decides
 
@@ -134,6 +192,7 @@ The CLI calls the same `Classifier.classify`. For a single call there is also `e
 - **Other 8-Ks, 10-Qs and 10-Ks are looser bounds.** Small issuers sometimes announce results without an Item 2.02. The fallback filing may come days after the release, so these rows are `medium` or `low` confidence.
 - **The API's time zone is not stable.** In September 2026, 43 of 228 `acceptanceDateTime` values I checked were US/Eastern wall-clock times labelled "Z", all from issuers no longer in SEC's ticker list. Read as UTC, they put a 16:18 filing at 12:18. On 2026-10-27 I rechecked seven of them, and all seven came back as real UTC. The tool reads the index page either way and records which convention the API used.
 - **The window is narrow.** A vendor date off by more than one trading day finds no filing, and the event comes back `no_filing_in_window`.
+- **`bars` checks dates, not prices.** A bar on the right day with a wrong price passes, and a real trading halt shows up as a gap. [METHOD.md](METHOD.md) section 10 has the rules.
 - **Calendar.** Early closes are the ones `exchange_calendars` lists. It has no early close on 2026-07-02, and published holiday tables disagree on that day. Dates must fall between 1995 and about a year from today.
 
 ## Roadmap
