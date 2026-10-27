@@ -286,6 +286,8 @@ class Classifier:
                     "full-text search did not find the ticker in this 8-K; "
                     "check the issuer if the ticker may have changed hands"
                 )
+            if checked:
+                res.notes.append("identity checks (CIK:result): " + ", ".join(checked))
             return _Found(cik, source, kind, best, n, RULE_ITEM_202)
         if checked:
             res.notes.append("identity checks (CIK:result): " + ", ".join(checked))

@@ -1,0 +1,13 @@
+{
+ "data.sec.gov/submissions/CIK0000320193.json": "submissions_CIK0000320193.json",
+ "data.sec.gov/submissions/CIK0001044777.json": "submissions_CIK0001044777.json",
+ "data.sec.gov/submissions/CIK0001080709.json": "submissions_CIK0001080709.json",
+ "efts.sec.gov/LATEST/search-index?ciks=0001080709&dateRange=custom&enddt=2017-05-09&forms=8-K&q=\"NASDAQ: ARNA\" OR \"NASDAQ/NMS: ARNA\" OR \"NASDAQ/NGS: ARNA\" OR \"NASDAQ GS: ARNA\" OR \"NASDAQGS: ARNA\" OR \"NASDAQ GM: ARNA\" OR \"NASDAQGM: ARNA\" OR \"NYSE: ARNA\" OR \"NYSE American: ARNA\" OR \"NYSE MKT: ARNA\" OR \"NYSE Amex: ARNA\" OR \"NYSEAMERICAN: ARNA\" OR \"NYSE Arca: ARNA\" OR \"AMEX: ARNA\" OR \"OTCQB: ARNA\" OR \"OTCQX: ARNA\" OR \"OTC: ARNA\"&startdt=2015-05-10": "fts_03.json",
+ "efts.sec.gov/LATEST/search-index?dateRange=custom&enddt=2016-05-15&forms=8-K&q=\"ARNA\"&startdt=2016-05-06": "fts_04.json",
+ "efts.sec.gov/LATEST/search-index?dateRange=custom&enddt=2019-11-04&forms=8-K&q=\"OSPN\"&startdt=2019-10-28": "fts_05.json",
+ "efts.sec.gov/LATEST/search-index?dateRange=custom&enddt=2024-08-07&forms=8-K&q=\"AAPL\"&startdt=2024-07-31": "fts_06.json",
+ "www.sec.gov/Archives/edgar/data/1044777/000155837019009352/0001558370-19-009352-index.htm": "0001558370-19-009352-index.htm",
+ "www.sec.gov/Archives/edgar/data/1080709/000162828016015931/0001628280-16-015931-index.htm": "0001628280-16-015931-index.htm",
+ "www.sec.gov/Archives/edgar/data/320193/000032019324000080/0000320193-24-000080-index.htm": "0000320193-24-000080-index.htm",
+ "www.sec.gov/files/company_tickers.json": "company_tickers.json"
+}

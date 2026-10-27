@@ -1,0 +1,228 @@
+{
+ "hits": {
+  "total": {
+   "value": 12,
+   "relation": "eq"
+  },
+  "hits": [
+   {
+    "_id": "0001193125-17-127504:d380948dex991.htm",
+    "_source": {
+     "adsh": "0001193125-17-127504",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "8.01",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2017-04-18"
+    }
+   },
+   {
+    "_id": "0001193125-17-127504:d380948dex992.htm",
+    "_source": {
+     "adsh": "0001193125-17-127504",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "8.01",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2017-04-18"
+    }
+   },
+   {
+    "_id": "0001564590-17-009831:arna-ex991_14.htm",
+    "_source": {
+     "adsh": "0001564590-17-009831",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2017-05-09"
+    }
+   },
+   {
+    "_id": "0001564590-16-027951:arna-ex991_15.htm",
+    "_source": {
+     "adsh": "0001564590-16-027951",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2016-11-07"
+    }
+   },
+   {
+    "_id": "0001628280-16-015931:exhibit991may92016.htm",
+    "_source": {
+     "adsh": "0001628280-16-015931",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2016-05-09"
+    }
+   },
+   {
+    "_id": "0001628280-15-006126:exhibit991.htm",
+    "_source": {
+     "adsh": "0001628280-15-006126",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2015-08-05"
+    }
+   },
+   {
+    "_id": "0001564590-17-004285:arna-ex991_6.htm",
+    "_source": {
+     "adsh": "0001564590-17-004285",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2017-03-14"
+    }
+   },
+   {
+    "_id": "0001193125-16-675104:d223276dex991.htm",
+    "_source": {
+     "adsh": "0001193125-16-675104",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2016-08-08"
+    }
+   },
+   {
+    "_id": "0001628280-15-008614:exhibit991november102015.htm",
+    "_source": {
+     "adsh": "0001628280-15-008614",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2015-11-10"
+    }
+   },
+   {
+    "_id": "0001193125-15-181996:d923785dex991.htm",
+    "_source": {
+     "adsh": "0001193125-15-181996",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2015-05-11"
+    }
+   },
+   {
+    "_id": "0001628280-16-011962:exhibit991earningsrelease1.htm",
+    "_source": {
+     "adsh": "0001628280-16-011962",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2016-02-29"
+    }
+   },
+   {
+    "_id": "0001564590-17-000136:arna-ex991_56.htm",
+    "_source": {
+     "adsh": "0001564590-17-000136",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "7.01",
+      "8.01",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2017-01-06"
+    }
+   }
+  ]
+ }
+}

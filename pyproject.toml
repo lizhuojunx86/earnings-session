@@ -67,7 +67,7 @@ ignore = ["ANN401"]
 [tool.mypy]
 strict = true
 python_version = "3.10"
-files = ["src", "tests"]
+files = ["src", "tests", "scripts"]
 
 [[tool.mypy.overrides]]
 module = ["exchange_calendars", "exchange_calendars.*"]

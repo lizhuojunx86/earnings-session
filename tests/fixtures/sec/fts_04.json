@@ -1,0 +1,28 @@
+{
+ "hits": {
+  "total": {
+   "value": 1,
+   "relation": "eq"
+  },
+  "hits": [
+   {
+    "_id": "0001628280-16-015931:exhibit991may92016.htm",
+    "_source": {
+     "adsh": "0001628280-16-015931",
+     "ciks": [
+      "0001080709"
+     ],
+     "display_names": [
+      "ARENA PHARMACEUTICALS INC  (CIK 0001080709)"
+     ],
+     "items": [
+      "2.02",
+      "9.01"
+     ],
+     "form": "8-K",
+     "file_date": "2016-05-09"
+    }
+   }
+  ]
+ }
+}
