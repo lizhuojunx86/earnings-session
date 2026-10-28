@@ -67,7 +67,7 @@ The submissions API gives `acceptanceDateTime` with a "Z" suffix. It is not alwa
 - 185 were real UTC. Apple's earnings 8-Ks, filed around 16:30 ET, read 20:30Z in summer and 21:30Z in winter.
 - 43 were the US/Eastern wall clock labelled Z. ARNA 2016-05-09 read "16:18:17Z" while its index page said "Accepted 2016-05-09 16:18:17", and the stock opened 5.1% higher the next day. All 43 came from issuers no longer in the current ticker list.
 
-Read as UTC, those 43 move 4 to 5 hours earlier: in that audit 26 after-entry filings would have read as intraday. On 2026-10-27 seven of the 43 were checked again and all seven now read as real UTC, so the data has been changed at least in part since September.
+Read as UTC, those 43 move 4 to 5 hours earlier: in that audit 26 after-entry filings would have read as intraday. On 2026-10-28 all 43 were checked again. Every one now reads as real UTC, and none of the 43 filer CIKs is in that day's `company_tickers.json`. SEC changed these files after September while the issuers stayed off the ticker list, so the convention of any file can change between two reads.
 
 The tool therefore takes the time from the index page's "Accepted" line, which is US/Eastern, and keeps the API value beside it with `zone_convention`:
 
